@@ -1,0 +1,39 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local DB and Caches
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+.cache/
+cache/
+thumbnails/
+config.toml
+
+# OS Files
+.DS_Store
+Thumbs.db

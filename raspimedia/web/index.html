@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RaspiMedia — User Media Center & Player</title>
+  <meta name="description" content="High-performance, read-only media library and hardware player controller for Raspberry Pi and Linux.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍓</text></svg>">
+</head>
+<body>
+
+  <!-- Top App Header -->
+  <header class="app-header">
+    <div class="brand-section" id="brand-home">
+      <div class="brand-icon">🍓</div>
+      <div class="brand-text">
+        <span class="brand-title">RaspiMedia</span>
+        <span class="brand-badge">Hardware Player</span>
+      </div>
+    </div>
+
+    <!-- Search input -->
+    <div class="search-container">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="global-search" class="search-input" placeholder="Search real library (title, artist, album, series)... [Press /]" autocomplete="off">
+    </div>
+
+    <!-- Action items -->
+    <div class="header-actions">
+      <div id="storage-status-badge" class="status-pill">
+        <span class="status-dot"></span>
+        <span id="storage-status-text">Storage Ready</span>
+      </div>
+
+      <button id="btn-rescan" class="btn" title="Scan configured media directories for new or changed files">
+        <span id="rescan-icon">⚡</span>
+        <span>Rescan Library</span>
+      </button>
+
+      <button id="btn-open-storage" class="btn btn-primary">
+        <span>📁 Directories</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main App Layout -->
+  <main class="app-container">
+
+    <!-- Actual Statistics Banner -->
+    <section class="stats-grid" id="stats-banner">
+      <div class="stat-card">
+        <div class="stat-icon" style="color: #60a5fa;">🎬</div>
+        <div class="stat-info">
+          <span class="stat-label">Videos</span>
+          <span class="stat-value" id="stat-videos-count">0</span>
+          <span class="stat-subtext" id="stat-videos-sub">Movies & Series</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="color: #c084fc;">🎵</div>
+        <div class="stat-info">
+          <span class="stat-label">Music</span>
+          <span class="stat-value" id="stat-music-count">0</span>
+          <span class="stat-subtext" id="stat-music-sub">Tracks & Albums</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="color: #34d399;">📦</div>
+        <div class="stat-info">
+          <span class="stat-label">Total Library</span>
+          <span class="stat-value" id="stat-total-count">0</span>
+          <span class="stat-subtext" id="stat-total-sub">Real files indexed</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon" style="color: #f43f5e;">⭐</div>
+        <div class="stat-info">
+          <span class="stat-label">Favorites</span>
+          <span class="stat-value" id="stat-fav-count">0</span>
+          <span class="stat-subtext">Starred media</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" id="main-tabs">
+      <button class="tab-btn active" data-tab="videos">
+        <span>🎬 Videos</span>
+        <span class="tab-badge" id="badge-tab-videos">0</span>
+      </button>
+      <button class="tab-btn" data-tab="music">
+        <span>🎵 Music</span>
+        <span class="tab-badge" id="badge-tab-music">0</span>
+      </button>
+      <button class="tab-btn" data-tab="favorites">
+        <span>⭐ Favorites</span>
+        <span class="tab-badge" id="badge-tab-fav">0</span>
+      </button>
+      <button class="tab-btn" data-tab="directories">
+        <span>📁 Storage & Dirs</span>
+        <span class="tab-badge" id="badge-tab-dirs">0</span>
+      </button>
+    </nav>
+
+    <!-- Sub Filters / Category Toolbar -->
+    <div class="sub-toolbar" id="sub-toolbar">
+      <div class="filter-pills" id="category-pills">
+        <button class="pill-btn active" data-filter="all">All</button>
+        <button class="pill-btn" data-filter="movie">Movies</button>
+        <button class="pill-btn" data-filter="series">Series</button>
+        <button class="pill-btn" data-filter="other_video">Other Videos</button>
+      </div>
+
+      <div class="filter-pills" id="sort-pills">
+        <button class="pill-btn active" data-sort="title">Title</button>
+        <button class="pill-btn" data-sort="added_at">Recently Added</button>
+        <button class="pill-btn" data-sort="play_count">Most Played</button>
+      </div>
+    </div>
+
+    <!-- Media Grid / Content Container -->
+    <section id="content-container">
+      <div class="media-grid" id="media-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Sticky Hardware Playback Bar -->
+  <footer class="player-bar" id="player-bar">
+    <div class="player-track-info">
+      <div class="player-thumb" id="player-cover">🍓</div>
+      <div class="player-titles">
+        <div class="player-title" id="player-track-title">RaspiMedia Ready</div>
+        <div class="player-subtitle" id="player-track-subtitle">Select media to play on HDMI / Audio output</div>
+      </div>
+    </div>
+
+    <div class="player-controls">
+      <div class="player-buttons">
+        <button class="ctrl-btn" id="btn-seek-back" title="Seek -10s">⏪ 10s</button>
+        <button class="ctrl-btn play-pause-btn" id="btn-play-pause" title="Play / Pause">▶</button>
+        <button class="ctrl-btn" id="btn-stop" title="Stop playback">⏹</button>
+        <button class="ctrl-btn" id="btn-seek-fwd" title="Seek +10s">10s ⏩</button>
+      </div>
+      <div class="progress-container">
+        <span id="player-time-current">00:00</span>
+        <div class="progress-bar-bg" id="progress-bar">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+        <span id="player-time-total">00:00</span>
+      </div>
+    </div>
+
+    <div class="player-extra">
+      <div class="hdmi-badge" title="Direct hardware playback via MPV to HDMI">
+        <span>📺</span>
+        <span>HDMI Output</span>
+      </div>
+      <div class="volume-slider-wrapper">
+        <span>🔊</span>
+        <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="100">
+      </div>
+    </div>
+  </footer>
+
+  <!-- Notification Toasts -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

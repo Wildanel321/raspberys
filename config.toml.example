@@ -1,0 +1,40 @@
+# RaspiMedia Configuration File
+# Copy to config.toml or specify via --config /path/to/config.toml
+
+[media]
+# List of directories containing user audio and video files.
+# RaspiMedia is READ-ONLY and will NEVER modify, move, copy, rename, delete, or transcode user files.
+directories = [
+    "/mnt/media",
+    "/mnt/storage/Music",
+    "/mnt/storage/Movies",
+    "/mnt/storage/Series"
+]
+
+[server]
+host = "0.0.0.0"
+port = 8080
+
+[database]
+# Path to SQLite database file. Created automatically if it does not exist.
+# Default locations checked:
+# 1. /var/lib/raspimedia/raspimedia.db (Linux system-wide)
+# 2. ~/.local/share/raspimedia/raspimedia.db (User mode)
+# 3. ./raspimedia.db (Current workspace)
+path = ""
+
+[mpv]
+# Path to MPV IPC socket (or named pipe on Windows)
+ipc_socket = "/tmp/mpvsocket"
+# Command / path to mpv binary
+executable = "mpv"
+# Default playback options passed to MPV if launched by RaspiMedia
+default_args = [
+    "--no-terminal",
+    "--force-window=immediate",
+    "--hwdec=auto-safe"
+]
+
+[cache]
+# Cache directory for thumbnails. Falls back to user cache if /var/cache is not writable.
+thumbnail_dir = "/var/cache/raspimedia/thumbnails"
